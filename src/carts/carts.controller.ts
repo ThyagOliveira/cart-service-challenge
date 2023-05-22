@@ -17,6 +17,13 @@ export class CartsController {
 
   @Post()
   async create(@Body() createCartDto: CreateCartDto) {
+    createCartDto.totalPrice = 0;
+    createCartDto.totalQuantity = 0;
+
+    createCartDto.products.map((item) => {
+      createCartDto.totalPrice += item['price'] * item['quantity'];
+      createCartDto.totalQuantity += item['quantity'];
+    });
     return await this.cartsService.create(createCartDto);
   }
 
